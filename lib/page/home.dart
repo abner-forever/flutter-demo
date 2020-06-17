@@ -1,101 +1,49 @@
 import 'package:flutter/material.dart';
-import 'package:english_words/english_words.dart';
-// import './detail.dart';
+import 'package:flutter/cupertino.dart';
+import './detail.dart';
+import './cart.dart';
+import './list_page.dart';
+import './mine.dart';
 
-class RandomWordsState extends State<RandomWords> {
-  final _suggestions = <WordPair>[];
-  final _biggerFont = const TextStyle(fontSize: 15.0, color: Colors.black38);
-  final _saved = new Set<WordPair>();
+class HomePage extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    void _pushSaved() {
-      Navigator.of(context).push(
-        new MaterialPageRoute(
-          builder: (context) {
-            final tiles = _saved.map(
-              (pair) {
-                return new ListTile(
-                  title: new Text(
-                    pair.asPascalCase,
-                    style: _biggerFont,
-                  ),
-                );
-              },
-            );
-            final divided = ListTile.divideTiles(
-              context: context,
-              tiles: tiles,
-            ).toList();
-            return new Scaffold(
-              appBar: new AppBar(
-                title: new Text('保存建议'),
-              ),
-              body: new ListView(children: divided),
-            );
-          },
-        ),
-      );
-    }
-    // return new Detail();
-    return new Scaffold(
-      appBar: new AppBar(
-        title: new Text('Startup Name Generator'),
-        actions: <Widget>[
-          new IconButton(icon: new Icon(Icons.list), onPressed: _pushSaved),
-        ],
-      ),
-      body: _buildSuggestions(),
-    );
-  }
-
-  Widget _buildSuggestions() {
-    return new ListView.builder(
-        padding: const EdgeInsets.all(16.0),
-        // 对于每个建议的单词对都会调用一次itemBuilder，然后将单词对添加到ListTile行中
-        // 在偶数行，该函数会为单词对添加一个ListTile row.
-        // 在奇数行，该函数会添加一个分割线widget，来分隔相邻的词对。
-        // 注意，在小屏幕上，分割线看起来可能比较吃力。
-        itemBuilder: (context, i) {
-          // 在每一列之前，添加一个1像素高的分隔线widget
-          if (i.isOdd) return new Divider();
-
-          // 语法 "i ~/ 2" 表示i除以2，但返回值是整形（向下取整），比如i为：1, 2, 3, 4, 5
-          // 时，结果为0, 1, 1, 2, 2， 这可以计算出ListView中减去分隔线后的实际单词对数量
-          final index = i ~/ 2;
-          // 如果是建议列表中最后一个单词对
-          if (index >= _suggestions.length) {
-            // ...接着再生成10个单词对，然后添加到建议列表
-            _suggestions.addAll(generateWordPairs().take(10));
-          }
-          return _buildRow(_suggestions[index]);
-        });
-  }
-
-  Widget _buildRow(WordPair pair) {
-    final alreadySaved = _saved.contains(pair);
-    return new ListTile(
-      title: new Text(
-        pair.asPascalCase,
-        style: _biggerFont,
-      ),
-      trailing: new Icon(
-        alreadySaved ? Icons.favorite : Icons.favorite_border,
-        color: alreadySaved ? Colors.red : null,
-      ),
-      onTap: () {
-        setState(() {
-          if (alreadySaved) {
-            _saved.remove(pair);
-          } else {
-            _saved.add(pair);
-          }
-        });
-      },
-    );
-  }
+  _HomePageState createState() => _HomePageState();
 }
 
-class RandomWords extends StatefulWidget {
+class _HomePageState extends State<HomePage> {
+  final List<BottomNavigationBarItem> bottomTabs = [
+    BottomNavigationBarItem(icon: Icon(CupertinoIcons.home), title: Text('首页')),
+    BottomNavigationBarItem(icon: Icon(CupertinoIcons.search), title: Text('分类')),
+    BottomNavigationBarItem(icon: Icon(CupertinoIcons.shopping_cart), title: Text('购物车')),
+    BottomNavigationBarItem(icon: Icon(CupertinoIcons.profile_circled), title: Text('会员'))
+  ];
+  final List tabBodies = [DetailPage(), CartPage(), ListPage(), MinePage()];
+  int currentIndex = 0;
+  var currentPage;
+
+  //初始化
   @override
-  createState() => new RandomWordsState();
+  void initState() {
+    currentPage = tabBodies[currentIndex];
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Color.fromRGBO(244, 245, 245, 1),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        currentIndex: currentIndex,
+        items: bottomTabs,
+        onTap: (index){
+            setState(() {
+             currentIndex =index;
+             currentPage = tabBodies[currentIndex]; 
+            });
+        },
+      ),
+      body: currentPage,
+    );
+  }
 }
