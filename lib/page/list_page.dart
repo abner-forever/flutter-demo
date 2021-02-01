@@ -1,43 +1,79 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'dart:io';
+import './Article/index.dart';
+// ignore: unused_import
+import '../api/index.dart';
+import 'package:dio/dio.dart';
 import 'dart:convert';
-import './News/index.dart';
+import '../utils/request.dart';
 
-class TabPage3 extends StatefulWidget {
+class TabPage extends StatefulWidget {
   @override
   createState() => new ListPage();
 }
 
-class ListPage extends State<TabPage3> {
-  List<Map<dynamic, dynamic>> newTitle = [];
-  _get() async {
-    var responseBody;
-    var url = 'http://foreverheart.top/api/article/articleList';
-    var httpClient = new HttpClient();
-    var request = await httpClient.getUrl(Uri.parse(url));
-    var response = await request.close();
-    if (response.statusCode == 200) {
-      responseBody = await response.transform(utf8.decoder).join();
-      responseBody = json.decode(responseBody)["data"];
-    } else {
-      print("error");
-    }
-    log(responseBody["list"].toString());
-    await responseBody["list"].map((item) {
-      // log(item.toString());
-      newTitle.add(item);
-    }).toList();
+class ListPage extends State<TabPage> {
+  List<dynamic> articleList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    print('initState');
+    print(mounted);
   }
 
-  Widget build(context) {
-    _get();
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (mounted) {
+      _getBanner();
+      print(mounted);
+    }
+    print('didChangeDependencies');
+  }
+
+  @override
+  void deactivate() {
+    super.deactivate();
+    print('deactivate');
+    print(mounted);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    print('dispose');
+    print(mounted);
+  }
+
+  _getBanner() async {
+    var res = await request.get(Api.acrticleList);
+    setState(() {
+      articleList = res['list'];
+    });
+  }
+
+  _home() {
     return new ListView(
-      children: newTitle.map((Map item) {
-        return new News(item['title'], item['description'],
+      children: articleList.map((item) {
+        return new Article(item['title'], item['description'],
             item['createTime']); //News接收2个参数（标题和图片url）
       }).toList(),
     );
+  }
+
+  Widget build(context) {
+    return new Scaffold(
+        appBar: new AppBar(
+          title: new Row(
+            children: [
+              new Text('文章列表'),
+              new IconButton(
+                icon: Icon(Icons.add),
+                onPressed: _getBanner,
+              )
+            ],
+          ),
+        ),
+        body: _home());
   }
 }
