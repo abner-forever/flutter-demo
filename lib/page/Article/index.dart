@@ -15,7 +15,7 @@ class ArticleState extends State<Article> {
         height: 100.0,
         padding: new EdgeInsets.only(left: 16.0, right: 16.0),
         decoration: new BoxDecoration(
-            color: Colors.red,
+            color: Colors.white,
             border: new Border(
                 bottom: new BorderSide(
                     width: 1.0, color: const Color(0xff999999)))),

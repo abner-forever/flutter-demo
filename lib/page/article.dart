@@ -1,8 +1,7 @@
-import 'package:TodoList/utils/screen.dart';
+import 'package:abner/utils/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'dart:async';
-import '../utils/border.dart';
 
 class ArticlePage extends StatefulWidget {
   @override
@@ -10,8 +9,6 @@ class ArticlePage extends StatefulWidget {
 }
 
 class _ArticlePageState extends State<ArticlePage> {
-  // ignore: unused_field
-  double _sliderValue = 0;
   String text;
   _ArticlePageState();
 

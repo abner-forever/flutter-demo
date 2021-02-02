@@ -1,17 +1,14 @@
-import 'dart:developer';
-
+import 'package:abner/api/index.dart';
+import 'package:abner/utils/request.dart';
 import 'package:flutter/material.dart';
-import './Article/index.dart';
-// ignore: unused_import
-import '../api/index.dart';
-import '../utils/request.dart';
+import 'article_item.dart';
 
-class ArticleList extends StatefulWidget {
+class TabPage extends StatefulWidget {
   @override
   createState() => new ListPage();
 }
 
-class ListPage extends State<ArticleList> {
+class ListPage extends State<TabPage> {
   List<dynamic> articleList = [];
 
   @override
@@ -41,7 +38,7 @@ class ListPage extends State<ArticleList> {
   @override
   void dispose() {
     super.dispose();
-    print('$articleList dispose');
+    print('dispose');
     print(mounted);
   }
 
@@ -56,19 +53,17 @@ class ListPage extends State<ArticleList> {
     return new ListView(
       children: articleList.map((item) {
         return new Article(item['title'], item['description'],
-            item['createTime']); //News接收2个参数（标题和图片url）
+            item['createTime'], item['id'].toString()); //News接收2个参数（标题和图片url）
       }).toList(),
     );
   }
 
   Widget build(context) {
-    var args = ModalRoute.of(context).settings.arguments;
-    log(args);
     return new Scaffold(
         appBar: new AppBar(
           title: new Row(
             children: [
-              new Text('列表'),
+              new Text('文章列表'),
               new IconButton(
                 icon: Icon(Icons.add),
                 onPressed: _getBanner,

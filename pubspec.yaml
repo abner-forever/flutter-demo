@@ -1,4 +1,4 @@
-name: TodoList
+name: abner
 description: A new Flutter project.
 
 # The following defines the version and build number for your application.
@@ -30,10 +30,11 @@ dependencies:
   flutter_webview_plugin: "^0.3.0"
   image_picker: "^0.4.1"
   fluttertoast: ^7.1.6
+  provide: ^1.0.0
   shared_preferences: "^0.4.1"
   event_bus: ^1.1.0
   barcode_scan: "^0.0.4"
-   
+  flutter_html: ^1.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

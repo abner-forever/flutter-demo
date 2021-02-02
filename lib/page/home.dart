@@ -1,50 +1,79 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import './detail.dart';
-import './article.dart';
-import './list_page.dart';
-import './mine.dart';
+import '../utils/screen.dart';
 
-class HomePage extends StatefulWidget {
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  final List<BottomNavigationBarItem> bottomTabs = [
-    BottomNavigationBarItem(icon: Icon(CupertinoIcons.home), label: '首页'),
-    BottomNavigationBarItem(icon: Icon(Icons.list_alt), label: "分类"),
-    BottomNavigationBarItem(icon: Icon(Icons.book), label: '文章'),
-    BottomNavigationBarItem(
-        icon: Icon(CupertinoIcons.profile_circled), label: '会员')
-  ];
-  final List tabBodies = [DetailPage(), ArticlePage(), TabPage(), MinePage()];
-  int currentIndex = 0;
-  var currentPage;
-
-  //初始化
-  @override
-  void initState() {
-    currentPage = tabBodies[currentIndex];
-    super.initState();
-  }
-
+class HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(245, 245, 245, 0.9),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        currentIndex: currentIndex,
-        items: bottomTabs,
-        onTap: (index) {
-          setState(() {
-            currentIndex = index;
-            currentPage = tabBodies[currentIndex];
-          });
-        },
-      ),
-      body: currentPage,
-    );
+        appBar: AppBar(
+          title: Text('首页'),
+        ),
+        body: _home());
   }
+
+  Timer _timer;
+
+  int a = 1;
+  final TextEditingController _controller = TextEditingController();
+  _home() {
+    return Container(
+        color: Colors.white70,
+        child: Column(children: <Widget>[
+          Container(
+            child: Row(
+              children: <Widget>[
+                Container(
+                  width: 50,
+                  color: Colors.amber,
+                  child: IconButton(
+                      icon: Icon(
+                        Icons.add,
+                        color: Colors.red,
+                      ),
+                      onPressed: () {
+                        _onPress();
+                      } // null 会禁用 button
+                      ),
+                ),
+                Text(a.toString()),
+              ],
+            ),
+          ),
+          Container(
+              width: px(345),
+              margin: EdgeInsets.fromLTRB(0, px(20), 0, 0),
+              child: Row(
+                children: <Widget>[
+                  Icon(CupertinoIcons.profile_circled),
+                  Container(
+                    width: px(300),
+                    margin: EdgeInsets.fromLTRB(px(10), 0, 0, 0),
+                    child: TextField(
+                      controller: _controller,
+                      style: TextStyle(color: Colors.black),
+                      decoration: InputDecoration(
+                        hintText: '请输入文字',
+                        focusColor: Colors.red,
+                      ),
+                    ),
+                  )
+                ],
+              )),
+        ]));
+  }
+
+  _onPress() {
+    setState(() {
+      a++;
+    });
+    Navigator.pushNamed(context, '/articlelist', arguments: '11'); //2
+  }
+}
+
+class Home extends StatefulWidget {
+  @override
+  createState() => HomeState();
 }
