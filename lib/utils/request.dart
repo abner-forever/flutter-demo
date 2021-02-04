@@ -3,7 +3,7 @@ import 'dart:convert';
 
 class NetUtils {
   ///get请求传入url+请求参数
-  Future<dynamic> get(String url, Map<String, dynamic> params) async {
+  Future<dynamic> get(String url, Map<dynamic, dynamic> params) async {
     if (params != null && params.isNotEmpty) {
       StringBuffer sb = new StringBuffer("?");
       params.forEach((key, value) {

@@ -10,28 +10,29 @@ class DetailPageState extends State<DetailPage> {
   var title;
   var userName;
   var _textStyle = TextStyle(color: Color(0xff333333), fontSize: px(18));
-  @override
-  void initState() {
-    super.initState();
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     _getGetail();
   }
 
   _getGetail() async {
-    var res = await request.get(Api.acrticleDetail, {"id": 'widget.id'});
+    var args = ModalRoute.of(context).settings.arguments;
+    print(args);
+    var res = await request.get(Api.acrticleDetail, {"id": args});
     setState(() {
       detail = res['contents'];
       title = res['title'];
       userName = res['userName'];
     });
-    print(res);
   }
 
   @override
   Widget build(BuildContext context) {
-    var args = ModalRoute.of(context).settings.arguments;
     return Scaffold(
         appBar: AppBar(
+          brightness: Brightness.light,
           backgroundColor: Colors.white,
           title: Text(
             title ?? '',

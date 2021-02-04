@@ -1,86 +1,91 @@
+import 'package:abner/utils/screen.dart';
 import 'package:flutter/material.dart';
 
-import '../detail.dart';
-
-class Article extends StatefulWidget {
-  final title, description, createTime, id;
-  Article(this.title, this.description, this.createTime, this.id);
-  @override
-  createState() => new ArticleState();
-}
-
-class ArticleState extends State<Article> {
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    print(widget);
-    print('didChangeDependencies');
-  }
+class ArticleCard extends StatelessWidget {
+  final Map<String, dynamic> data;
+  ArticleCard(this.data);
 
   @override
   Widget build(BuildContext context) {
-    return new Center(
-      child: new FlatButton(
-          height: 100.0,
-          onPressed: () {
-            _onPressDetail(widget.id);
-          },
-          padding: new EdgeInsets.only(left: 16.0, right: 16.0),
-          color: Color(0xfff5f5f5),
-          highlightColor: Colors.transparent,
-          splashColor: Colors.transparent,
+    return Container(
+      margin: EdgeInsets.fromLTRB(16, 12, 16, 0),
+      // width: px(365),
+      decoration: new BoxDecoration(
+          color: Color(0xffffffff),
+          borderRadius: BorderRadius.all(
+            const Radius.circular(4.0),
+          )),
+      child: FlatButton(
+        onPressed: () {
+          _onPressDetail(context, data['id']);
+        },
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        highlightColor: Color(0xffffffff),
+        splashColor: Colors.transparent,
+        child: new Container(
+          height: px(60),
           child: new Container(
-            decoration: new BoxDecoration(
-                color: Color(0xfff5f5f5),
-                border: new Border(
-                    bottom: new BorderSide(
-                        width: 1.0, color: const Color(0xff999999)))),
-            child: new Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            child: new Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: <Widget>[
-                new Expanded(
-                  flex: 1,
-                  child: new Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      new Container(
-                        padding: new EdgeInsets.only(top: 15.0),
-                        decoration: new BoxDecoration(),
-                        child: new Text(
-                          widget.title,
-                          style: new TextStyle(fontSize: 18.0),
-                        ),
-                      ),
-                      new Container(
-                          padding:
-                              const EdgeInsets.only(right: 5.0, bottom: 15.0),
-                          decoration: new BoxDecoration(),
-                          child: new Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              new Container(
-                                  width: 200,
-                                  child: new Text(
-                                    widget.description,
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                  )),
-                              new Text(
-                                widget.createTime,
-                              ),
-                            ],
-                          )),
-                    ],
+                new Container(
+                  child: new Text(
+                    data['title'],
+                    style:
+                        new TextStyle(fontSize: 18.0, color: Color(0xff333333)),
                   ),
                 ),
+                new Container(
+                    decoration: new BoxDecoration(),
+                    child: new Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        new Container(
+                            width: px(160),
+                            child: new Text(
+                              data['description'],
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 1,
+                            )),
+                        new Text(
+                          data['createTime'],
+                          style: TextStyle(
+                              fontSize: px(12), color: Color(0xff666666)),
+                        ),
+                      ],
+                    )),
               ],
             ),
-          )),
+          ),
+        ),
+      ),
     );
   }
 
-  _onPressDetail(val) {
-    Navigator.pushNamed(context, '/detail', arguments: 'val'); //2
+  _onPressDetail(ctx, val) {
+    Navigator.pushNamed(ctx, '/detail', arguments: val); //2
   }
+}
+
+class ArticleModel {
+  final String title;
+
+  final String description;
+
+  final String createTime;
+
+  final String updateTime;
+
+  final String userName;
+
+  // final int id;
+
+  const ArticleModel(
+      {this.title,
+      this.description,
+      this.createTime,
+      // this.id,
+      this.userName,
+      this.updateTime});
 }

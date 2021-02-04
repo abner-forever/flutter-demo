@@ -1,7 +1,7 @@
+import 'package:abner/page/sliver_demo/index.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'home.dart';
-import 'article.dart';
 import 'article_list/index.dart';
 import 'mine.dart';
 
@@ -15,9 +15,16 @@ class _HomePageState extends State<HomePage> {
     BottomNavigationBarItem(icon: Icon(Icons.home), label: '首页'),
     BottomNavigationBarItem(icon: Icon(Icons.list_alt), label: "分类"),
     BottomNavigationBarItem(icon: Icon(Icons.book), label: '文章'),
-    BottomNavigationBarItem(icon: Icon(Icons.account_box), label: '会员')
+    BottomNavigationBarItem(icon: Icon(Icons.account_box), label: '我的')
   ];
-  final List tabBodies = [Home(), ArticlePage(), TabPage(), RandomWords()];
+  final List tabBodies = [
+    Home(),
+    RandomWords(),
+    ArticleList(),
+    SliverDemo(
+      title: '',
+    ),
+  ];
   int currentIndex = 0;
   var currentPage;
 
@@ -33,6 +40,9 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: Color.fromRGBO(245, 245, 245, 0.9),
       bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Colors.red,
+        // unselectedItemColor: Colors.pink[100],
+        // selectedIconTheme:,
         type: BottomNavigationBarType.fixed,
         currentIndex: currentIndex,
         items: bottomTabs,

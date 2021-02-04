@@ -1,24 +1,19 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import './Article/index.dart';
-// ignore: unused_import
 import '../api/index.dart';
 import '../utils/request.dart';
 
-class ArticleList extends StatefulWidget {
+class ListPage extends StatefulWidget {
   @override
-  createState() => new ListPage();
+  createState() => new ListPageState();
 }
 
-class ListPage extends State<ArticleList> {
+class ListPageState extends State<ListPage> {
   List<dynamic> articleList = [];
 
   @override
   void initState() {
     super.initState();
-    print('initState');
-    print(mounted);
   }
 
   @override
@@ -26,23 +21,17 @@ class ListPage extends State<ArticleList> {
     super.didChangeDependencies();
     if (mounted) {
       _getBanner();
-      print(mounted);
     }
-    print('didChangeDependencies');
   }
 
   @override
   void deactivate() {
     super.deactivate();
-    print('deactivate');
-    print(mounted);
   }
 
   @override
   void dispose() {
     super.dispose();
-    print('$articleList dispose');
-    print(mounted);
   }
 
   _getBanner() async {
@@ -62,8 +51,6 @@ class ListPage extends State<ArticleList> {
   }
 
   Widget build(context) {
-    var args = ModalRoute.of(context).settings.arguments;
-    log(args);
     return new Scaffold(
         appBar: new AppBar(
           title: new Row(
